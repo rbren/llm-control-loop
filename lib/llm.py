@@ -49,6 +49,11 @@ of their content.
 ```json
 {monologue}
 ```
+Make the summaries as pithy and informative as possible.
+Be specific about what happened and what was learned. The summary
+will be used as keywords for searching for the original memory.
+Be sure to preserve any key words or important information.
+
 Your response must be in JSON format. It must be an object with the
 key `new_monologue`, which is a JSON array containing the summarized monologue.
 """

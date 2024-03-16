@@ -7,6 +7,9 @@ class Event:
         self.event_type = event_type
         self.args = args
 
+    def __str__(self):
+        return self.event_type + " " + str(self.args)
+
     def to_dict(self):
         return {
             'event_type': self.event_type,

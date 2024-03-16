@@ -43,23 +43,31 @@ def main():
     next_is_output = False
     for thought in INITIAL_THOUGHTS:
         if next_is_output:
-            agent.add_
-        event = None
-        if thought.startswith("RUN"):
-            command = thought.split("RUN ")[1]
-            event = Event('run', {'command': command})
-        elif thought.startswith("RECALL"):
-            query = thought.split("RECALL ")[1]
-            event = Event('recall', {'query': query})
-        elif thought.startswith("BROWSE"):
-            url = thought.split("BROWSE ")[1]
-            event = Event('browse', {'url': url})
+            event = Event('output', {'output': thought})
+            next_is_output = False
         else:
-            event = Event('think', {'thought': thought})
+            if thought.startswith("RUN"):
+                command = thought.split("RUN ")[1]
+                event = Event('run', {'command': command})
+                next_is_output = True
+            elif thought.startswith("RECALL"):
+                query = thought.split("RECALL ")[1]
+                event = Event('recall', {'query': query})
+                next_is_output = True
+            elif thought.startswith("BROWSE"):
+                url = thought.split("BROWSE ")[1]
+                event = Event('browse', {'url': url})
+                next_is_output = True
+            else:
+                event = Event('think', {'thought': thought})
 
         agent.add_event(event)
+    for thought in agent.monologue.get_thoughts():
+        print(thought)
     agent.monologue.condense()
-    print(agent.monologue.get_thoughts())
+    print("\n\n\n")
+    for thought in agent.monologue.get_thoughts():
+        print(thought)
 
 if __name__ == "__main__":
     main()

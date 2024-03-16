@@ -1,7 +1,7 @@
 from lib.monologue import Monologue
 from lib.memory import LongTermMemory
 
-MAX_MONOLOGUE_LENGTH = 2000
+MAX_MONOLOGUE_LENGTH = 20000
 
 class Agent:
     def __init__(self):
