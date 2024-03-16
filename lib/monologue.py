@@ -12,6 +12,10 @@ class Monologue:
     def get_thoughts(self):
         return self.thoughts
 
+    def get_total_length(self):
+        return sum([len(t) for t in self.thoughts])
+
+
     def condense(self):
         prompt = """
 Below is the internal monologue of an automated LLM agent. Each
