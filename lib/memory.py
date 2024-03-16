@@ -1,4 +1,5 @@
 import os
+import lib.json as json
 
 import chromadb
 
@@ -19,12 +20,13 @@ class LongTermMemory:
         self.index = VectorStoreIndex.from_vector_store(vector_store)
         self.thought_idx = 0
 
-    def add_thought(self, type, content):
+    def add_event(self, event):
         doc = Document(
-            text=content,
+            text=json.dumps(event),
             doc_id=self.thought_idx,
             extra_info={
-                "type": type,
+                "type": event.event_type,
+                "idx": self.thought_idx,
             },
         )
         self.thought_idx += 1
