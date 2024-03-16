@@ -80,12 +80,12 @@ def summarize_monologue(thoughts):
     parsed = parser.parse(resp['text'])
     return parsed['new_monologue']
 
-def request_action(agent):
+def request_action(thoughts):
     llm = OpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
     prompt = PromptTemplate.from_template(ACTION_PROMPT)
     llm_chain = LLMChain(prompt=prompt, llm=llm)
     parser = JsonOutputParser(pydantic_object=Action)
-    resp = llm_chain.invoke({"monologue": agent.monologue.get_thoughts()})
+    resp = llm_chain.invoke({"monologue": json.dumps(thoughts)})
     parsed = parser.parse(resp['text'])
     return parsed
 

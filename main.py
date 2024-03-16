@@ -62,12 +62,14 @@ def main():
                 event = Event('think', {'thought': thought})
 
         agent.add_event(event)
-    for thought in agent.monologue.get_thoughts():
-        print(thought)
-    agent.monologue.condense()
-    print("\n\n\n")
-    for thought in agent.monologue.get_thoughts():
-        print(thought)
+    for i in range(100):
+        print("STEP", i)
+        action = agent.get_next_action()
+        print(action)
+        print("---")
+        out = agent.maybe_perform_latest_action()
+        print(out)
+        print("==============")
 
 if __name__ == "__main__":
     main()

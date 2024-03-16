@@ -16,7 +16,10 @@ class Event:
             'args': self.args
         }
 
-    def run(self, agent):
+    def is_runnable(self):
+        return self.event_type in ['run', 'browse', 'read', 'write', 'recall']
+
+    def run(self, memory):
         if self.event_type == 'run':
             cmd = self.args['command']
             return os.popen(cmd).read()
@@ -33,15 +36,7 @@ class Event:
                 file.write(self.args['contents'])
             return ""
         elif self.event_type == 'recall':
-            return agent.memory.search(self.args['query'])
-        elif self.event_type == 'think':
-            agent.add_thought(self.args['thought'])
-            return self.content
-        elif self.event_type == 'output':
-            return self.args['output']
+            return memory.search(self.args['query'])
         else:
             raise ValueError('Invalid action type')
-
-
-
 
