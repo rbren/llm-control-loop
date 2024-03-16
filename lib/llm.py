@@ -12,7 +12,7 @@ from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
-from langchain_openai import OpenAI
+from langchain.chat_models import ChatOpenAI
 
 ACTION_PROMPT = """
 You're a thoughtful robot. This is your internal monologue, in JSON format:
@@ -76,19 +76,23 @@ class Action(BaseModel):
 class NewMonologue(BaseModel):
     new_monologue: List[Action]
 
-def summarize_monologue(thoughts):
-    llm = OpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
-    prompt = PromptTemplate.from_template(MONOLOGUE_SUMMARY_PROMPT)
+def get_chain(template):
+    llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model_name=os.getenv("OPENAI_MODEL"))
+    prompt = PromptTemplate.from_template(template)
     llm_chain = LLMChain(prompt=prompt, llm=llm)
+    return llm_chain
+
+def summarize_monologue(thoughts):
+    llm_chain = get_chain(MONOLOGUE_SUMMARY_PROMPT)
     parser = JsonOutputParser(pydantic_object=NewMonologue)
     resp = llm_chain.invoke({'monologue': json.dumps({'old_monologue': thoughts})})
+    if os.getenv("DEBUG"):
+        print("resp", resp)
     parsed = parser.parse(resp['text'])
     return parsed['new_monologue']
 
 def request_action(thoughts):
-    llm = OpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
-    prompt = PromptTemplate.from_template(ACTION_PROMPT)
-    llm_chain = LLMChain(prompt=prompt, llm=llm)
+    llm_chain = get_chain(ACTION_PROMPT)
     parser = JsonOutputParser(pydantic_object=Action)
     resp = llm_chain.invoke({"monologue": json.dumps(thoughts)})
     if os.getenv("DEBUG"):
