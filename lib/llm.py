@@ -1,5 +1,11 @@
 import os
 
+import lib.json as json
+
+if os.getenv("DEBUG"):
+    from langchain.globals import set_debug
+    set_debug(True)
+
 from typing import List
 from langchain_core.pydantic_v1 import BaseModel, Field
 
@@ -70,7 +76,7 @@ def summarize_monologue(thoughts):
     prompt = PromptTemplate.from_template(MONOLOGUE_SUMMARY_PROMPT)
     llm_chain = LLMChain(prompt=prompt, llm=llm)
     parser = JsonOutputParser(pydantic_object=NewMonologue)
-    resp = llm_chain.invoke({'monologue': {'old_monologue': thoughts}})
+    resp = llm_chain.invoke({'monologue': json.dumps({'old_monologue': thoughts})})
     parsed = parser.parse(resp['text'])
     return parsed['new_monologue']
 
