@@ -15,10 +15,12 @@ from langchain_core.output_parsers import JsonOutputParser
 from langchain_openai import OpenAI
 
 ACTION_PROMPT = """
-You're a thoughtful robot. This is your internal monologue:
+You're a thoughtful robot. This is your internal monologue, in JSON format:
 ```json
 {monologue}
 ```
+
+Your most recent thought is at the bottom of that monologue. Continue your train of thought.
 What is your next thought or action? Your response must be in JSON format.
 It must be an object, and it must contain two fields:
 * `action`, which is one of the actions below
@@ -40,7 +42,7 @@ Here are the possible actions:
   * `thought` - the thought to record
 
 You MUST take time to think in between other actions. You should never act twice in a row without thinking.
-What is your next thought or action?
+What is your next thought or action? Again, you must reply with JSON, and only with JSON.
 """
 
 MONOLOGUE_SUMMARY_PROMPT = """
@@ -86,6 +88,8 @@ def request_action(thoughts):
     llm_chain = LLMChain(prompt=prompt, llm=llm)
     parser = JsonOutputParser(pydantic_object=Action)
     resp = llm_chain.invoke({"monologue": json.dumps(thoughts)})
+    if os.getenv("DEBUG"):
+        print("resp", resp)
     parsed = parser.parse(resp['text'])
     return parsed
 

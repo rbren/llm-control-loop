@@ -1,6 +1,7 @@
 from lib.monologue import Monologue
 from lib.memory import LongTermMemory
 from lib.event import Event
+import lib.llm as llm
 
 MAX_MONOLOGUE_LENGTH = 20000
 
@@ -25,7 +26,7 @@ class Agent:
     def maybe_perform_latest_action(self):
         if not (self.latest_action and self.latest_action.is_runnable()):
             return
-        output = latest_action.run(agent)
+        output = self.latest_action.run(self)
         out_event = Event('output', {'output': output})
         self.add_event(out_event)
         return out_event
