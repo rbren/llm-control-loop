@@ -26,7 +26,10 @@ class Agent:
     def maybe_perform_latest_action(self):
         if not (self.latest_action and self.latest_action.is_runnable()):
             return
-        output = self.latest_action.run(self)
+        try:
+            output = self.latest_action.run(self)
+        except Exception as e:
+            output = 'Error: ' + str(e)
         out_event = Event('output', {'output': output})
         self.add_event(out_event)
         return out_event

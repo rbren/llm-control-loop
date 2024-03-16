@@ -41,7 +41,10 @@ Here are the possible actions:
 * `think` - make a plan, set a goal, or record your thoughts. Arguments:
   * `thought` - the thought to record
 
-You MUST take time to think in between other actions. You should never act twice in a row without thinking.
+You MUST take time to think in between read, write, run, browse, and recall actions.
+You should never act twice in a row without thinking. But if your last several
+actions are all "think" actions, you should consider taking a different action.
+
 What is your next thought or action? Again, you must reply with JSON, and only with JSON.
 """
 
