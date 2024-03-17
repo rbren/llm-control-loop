@@ -69,6 +69,9 @@ Be sure to preserve any key words or important information.
 
 Your response must be in JSON format. It must be an object with the
 key `new_monologue`, which is a JSON array containing the summarized monologue.
+Each entry in the array must have an `action` key, and an `args` key.
+The action key may be `summarize`, and `args.summary` should contain the summary.
+You can also use the same action and args from the source monologue.
 """
 
 class Action(BaseModel):
@@ -99,9 +102,9 @@ def request_action(thoughts):
     hint = ''
     if len(thoughts) > 0:
         latest_thought = thoughts[-1]
-        if latest_thought.event_type == 'think':
+        if latest_thought.action == 'think':
             hint = "You've been thinking a lot lately. Maybe it's time to take action?"
-        elif latest_thought.event_type == 'error':
+        elif latest_thought.action == 'error':
             hint = "Looks like that last command failed. Maybe you need to fix it, or try something else."
     latest_thought = thoughts[-1]
     resp = llm_chain.invoke({

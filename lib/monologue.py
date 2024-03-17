@@ -1,4 +1,5 @@
 import lib.json as json
+from lib.event import Event
 
 import lib.llm as llm
 
@@ -16,5 +17,8 @@ class Monologue:
         return sum([len(json.dumps(t)) for t in self.thoughts])
 
     def condense(self):
-        self.thoughts = llm.summarize_monologue(self.thoughts)
+        new_thoughts = llm.summarize_monologue(self.thoughts)
+        print("new thoughts", new_thoughts)
+        self.thoughts = [Event(t['action'], t['args']) for t in new_thoughts]
+
 

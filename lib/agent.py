@@ -27,15 +27,15 @@ class Agent:
     def maybe_perform_latest_action(self):
         if not (self.latest_action and self.latest_action.is_runnable()):
             return
-        event_type = 'output'
+        action = 'output'
         try:
             output = self.latest_action.run(self)
         except Exception as e:
             output = 'Error: ' + str(e)
-            event_type = 'error'
+            action = 'error'
         if len(output) > MAX_OUTPUT_LENGTH:
             output = output[:MAX_OUTPUT_LENGTH] + '...'
-        out_event = Event(event_type, {'output': output})
+        out_event = Event(action, {'output': output})
         self.add_event(out_event)
         return out_event
 
