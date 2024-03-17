@@ -75,7 +75,7 @@ def main():
         print(action)
         print("---")
         out = agent.maybe_perform_latest_action()
-        if len(out) > 1000:
+        if out and len(out) > 1000:
             out = out[:1000] + "..."
         print(out)
         print("==============")
