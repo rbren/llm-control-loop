@@ -5,5 +5,5 @@ rm -rf `pwd`/workspace
 mkdir -p `pwd`/workspace
 
 docker build -t control-loop .
-docker run -e OPENAI_API_KEY=$OPENAI_API_KEY -v `pwd`/workspace:/workspace control-loop python main.py
+docker run -e OPENAI_API_KEY=$OPENAI_API_KEY -v `pwd`/workspace:/workspace control-loop
 

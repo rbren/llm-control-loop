@@ -16,5 +16,5 @@ COPY main.py ./main.py
 
 WORKDIR /workspace
 
-ENTRYPOINT ["python", "/app/main.py", "/workspace"]
+CMD ["python", "/app/main.py", "/workspace"]
 
