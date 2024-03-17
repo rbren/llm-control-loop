@@ -3,6 +3,7 @@ from lib.memory import LongTermMemory
 from lib.event import Event
 import lib.llm as llm
 
+MAX_OUTPUT_LENGTH = 5000
 MAX_MONOLOGUE_LENGTH = 20000
 
 class Agent:
@@ -30,6 +31,8 @@ class Agent:
             output = self.latest_action.run(self)
         except Exception as e:
             output = 'Error: ' + str(e)
+        if len(output) > MAX_OUTPUT_LENGTH:
+            output = output[:MAX_OUTPUT_LENGTH] + '...'
         out_event = Event('output', {'output': output})
         self.add_event(out_event)
         return out_event

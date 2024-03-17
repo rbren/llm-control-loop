@@ -39,4 +39,3 @@ class Event:
             return memory.search(self.args['query'])
         else:
             raise ValueError('Invalid action type')
-
