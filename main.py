@@ -3,6 +3,7 @@ import os
 
 from lib.agent import Agent
 from lib.event import Event
+from lib.controlloop import run_loop
 
 INITIAL_THOUGHTS = [
 "I exist!",
@@ -69,6 +70,7 @@ def main():
                 event = Event('think', {'thought': thought})
 
         agent.add_event(event)
+    run_loop(agent)
 
 if __name__ == "__main__":
     main()
