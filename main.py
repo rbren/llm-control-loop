@@ -1,3 +1,6 @@
+import sys
+import os
+
 from lib.agent import Agent
 from lib.event import Event
 
@@ -39,6 +42,10 @@ INITIAL_THOUGHTS = [
 ]
 
 def main():
+    if len(sys.argv) > 1:
+        print("Working in directory:", sys.argv[1])
+        os.chdir(sys.argv[1])
+
     agent = Agent()
     next_is_output = False
     for thought in INITIAL_THOUGHTS:
