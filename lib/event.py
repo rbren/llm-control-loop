@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import subprocess
 
 class Event:
     def __init__(self, event_type, args):
@@ -22,7 +23,12 @@ class Event:
     def run(self, memory):
         if self.event_type == 'run':
             cmd = self.args['command']
-            return os.popen(cmd).read()
+            result = subprocess.run(["/bin/bash", "-c", cmd], capture_output=True, text=True)
+            output = result.stdout + result.stderr
+            exit_code = result.returncode
+            if exit_code != 0:
+                raise ValueError('Command failed with exit code ' + str(exit_code) + ': ' + output)
+            return output
         elif self.event_type == 'browse':
             url = self.args['url']
             response = requests.get(url)
