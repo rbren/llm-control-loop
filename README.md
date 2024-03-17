@@ -6,5 +6,5 @@ backend.
 
 ## Usage
 ```bash
-./build-and-run.sh "write a script that prints 'hello world'"
+./build-and-run.sh "write a bash script that prints 'hello world'"
 ```
