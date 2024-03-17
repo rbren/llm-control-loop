@@ -69,16 +69,6 @@ def main():
                 event = Event('think', {'thought': thought})
 
         agent.add_event(event)
-    for i in range(100):
-        print("STEP", i)
-        action = agent.get_next_action()
-        print(action)
-        print("---")
-        out = agent.maybe_perform_latest_action()
-        if out and len(out) > 1000:
-            out = out[:1000] + "..."
-        print(out)
-        print("==============")
 
 if __name__ == "__main__":
     main()
