@@ -1,11 +1,12 @@
 def run_loop(agent, max_iterations=100):
     for i in range(max_iterations):
-        print("STEP", i)
+        print("STEP", i, flush=True)
         action = agent.get_next_action()
-        print(action)
-        print("---")
+        print(action, flush=True)
+        print("---", flush=True)
         out = agent.maybe_perform_latest_action()
-        print(out)
-        print("==============")
+        print(out, flush=True)
+        print("==============", flush=True)
+
 
 
