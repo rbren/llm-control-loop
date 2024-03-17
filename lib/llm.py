@@ -46,6 +46,8 @@ You should never act twice in a row without thinking. But if your last several
 actions are all "think" actions, you should consider taking a different action.
 
 What is your next thought or action? Again, you must reply with JSON, and only with JSON.
+
+{hint}
 """
 
 MONOLOGUE_SUMMARY_PROMPT = """
@@ -94,7 +96,18 @@ def summarize_monologue(thoughts):
 def request_action(thoughts):
     llm_chain = get_chain(ACTION_PROMPT)
     parser = JsonOutputParser(pydantic_object=Action)
-    resp = llm_chain.invoke({"monologue": json.dumps(thoughts)})
+    hint = ''
+    if len(thoughts) > 0:
+        latest_thought = thoughts[-1]
+        if latest_thought.event_type == 'think':
+            hint = "You've been thinking a lot lately. Maybe it's time to take action?"
+        elif latest_thought.event_type == 'error':
+            hint = "Looks like that last command failed. Maybe you need to fix it, or try something else."
+    latest_thought = thoughts[-1]
+    resp = llm_chain.invoke({
+        "monologue": json.dumps(thoughts),
+        "hint": hint,
+    })
     if os.getenv("DEBUG"):
         print("resp", resp)
     parsed = parser.parse(resp['text'])
