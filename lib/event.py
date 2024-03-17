@@ -1,6 +1,5 @@
 import os
 import json
-import requests
 import lib.actions as actions
 
 class Event:
