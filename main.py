@@ -5,11 +5,18 @@ from lib.agent import Agent
 from lib.event import Event
 from lib.controlloop import run_loop
 
+if len(sys.argv) < 3:
+    print("Usage: python main.py <working_directory> <task>")
+    sys.exit(1)
+
+working_directory = sys.argv[1]
+task = sys.argv[2]
+
 INITIAL_THOUGHTS = [
 "I exist!",
 "Hmm...looks like I can type in a command line prompt",
 "Looks like I have a web browser too!",
-"to build a TODO list app in React and express",
+"to $TASK",
 "How am I going to get there though?",
 "It seems like I have some kind of short term memory.",
 "Each of my thoughts seems to be stored in a numbered list.",
@@ -20,7 +27,7 @@ INITIAL_THOUGHTS = [
 "Sometimes they're random thoughts that don't really have to do with what I wanted to remember. But usually they're exactly what I need!",
 "Let's try it out!",
 "RECALL what it is I want to do",
-"to build a TODO list app in React and express",
+"to $TASK",
 "How am I going to get there though?",
 "Neat! And it looks like it's easy for me to use the command line too! I just have to say RUN followed by the command I want to run. The command output just jumps into my head!",
 "RUN echo \"hello world\"",
@@ -39,17 +46,17 @@ INITIAL_THOUGHTS = [
 "Very cool. Now to accomplish my task.",
 "I'll need a strategy. And as I make progress, I'll need to keep refining that strategy. I'll need to set goals, and break them into sub-goals.",
 "In between actions, I must always take some time to think, strategize, and set new goals. I should never take two actions in a row.",
-"OK so my task is to build a TODO list app in React and express",
+"OK so my task is to $TASK",
 ]
 
 def main():
-    if len(sys.argv) > 1:
-        print("Working in directory:", sys.argv[1])
-        os.chdir(sys.argv[1])
+    print("Working in directory:", sys.argv[1])
+    os.chdir(working_directory)
 
     agent = Agent()
     next_is_output = False
     for thought in INITIAL_THOUGHTS:
+        thought = thought.replace("$TASK", task)
         if next_is_output:
             event = Event('output', {'output': thought})
             next_is_output = False
