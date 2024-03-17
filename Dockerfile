@@ -3,6 +3,9 @@ from python:3.12-bookworm
 ENV OPENAI_API_KEY=""
 ENV OPENAI_MODEL="gpt-4-0125-preview"
 
+RUN apt-get update
+RUN apt-get install -y git sudo curl
+
 WORKDIR /app
 
 COPY requirements.txt ./requirements.txt
